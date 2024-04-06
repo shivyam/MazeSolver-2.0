@@ -1,19 +1,40 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Maze{
 
-    private ArrayList<ArrayList<String>> maze= new ArrayList<ArrayList<String>>();
+    private static final Logger logger = LogManager.getLogger();
+
+    private List<List<String>> maze= new ArrayList<>();
     private int width;
 
-    public Maze(ArrayList<ArrayList<String>> userMaze){
-        maze= new ArrayList<ArrayList<String>>(userMaze);
+    
+    public Maze(String filePath) throws Exception {
+        logger.debug("Reading the maze from file " + filePath);
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            List<String> row = new ArrayList<>();
+            for (int idx = 0; idx < line.length(); idx++) {
+                if (line.charAt(idx) == '#') {
+                    row.add("WALL ");
+                } else if (line.charAt(idx) == ' ') {
+                    row.add("PASS ");
+                }
+            }
+            maze.add(row);
+        }
     }
 
-
-    public ArrayList<ArrayList<String>> getMaze(){
+    public List<List<String>> getMaze(){
         return maze;
     }
 

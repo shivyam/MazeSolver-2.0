@@ -25,7 +25,7 @@ public record Configuration(String inputFilePath, String userPath){
         CommandLineParser parser = new DefaultParser();
         try {
             CommandLine cmd = parser.parse(options, args);
-            inputFilePath = cmd.getOptionValue("i");
+            inputFilePath = cmd.getOptionValue("righthand");
             
             //checks if user uses -p flag
             if(cmd.hasOption("p")) {

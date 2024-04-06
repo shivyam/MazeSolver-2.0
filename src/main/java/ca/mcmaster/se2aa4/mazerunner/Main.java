@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.commons.cli.*;
 import java.io.IOException;
+import java.nio.file.Path;
 
 public class Main {
 
@@ -15,48 +16,71 @@ public class Main {
     
 
     public static void main(String[] args) {
-        ArrayList<ArrayList<String>> userMaze = new ArrayList<ArrayList<String>>();
-        Configuration config= Configuration.load(args);
-        
-        String inputFilePath= config.inputFilePath();
-        String userPath= config.userPath();
+        logger.info("** Starting Maze Runner");
+        CommandLineParser parser = new DefaultParser();
+        CommandLine cmd = null;
+
         try{
-            BufferedReader reader = new BufferedReader(new FileReader(inputFilePath));
-            String line;
-            
-            while ((line = reader.readLine()) != null) {
-                ArrayList<String> row = new ArrayList<String>();
+            cmd = parser.parse(getParserOptions(), args);
+            String inputFilePath = cmd.getOptionValue('i');
+            Maze mazeTest= new Maze(inputFilePath);
 
-                for (int idx = 0; idx < line.length(); idx++) {
-                    if (line.charAt(idx) == '#') {
-                        row.add("WALL ");
-                    } else if (line.charAt(idx) == ' ') {
-                        row.add("PASS ");
-                    }  
-                }
-                userMaze.add(row);
-            }
-            
-                Maze mazeTest= new Maze(userMaze);
-                RightHandSolver path= new RightHandSolver(mazeTest);
+            if (cmd.getOptionValue("p") != null) {
+                logger.info("Validating path");
+                String userPath = cmd.getOptionValue("p");
                 PathValidator check= new PathValidator(mazeTest, userPath);
-                if((userPath.equals(""))){
-                    logger.info(path.findFactorizedPath());
-                }
-                else{
-                    logger.info(check.checkPath());
-                }
-        } 
-        catch (IOException e) { 
-            logger.error("Error occured while reading the file: " + e.getMessage());
+                logger.info(check.checkPath());
+                
+            } else {
+                String method = cmd.getOptionValue("method", "righthand");
+                String path= solveMaze(method, mazeTest);
+                System.out.println(path);
+            }
+        } catch (Exception e) {
+            System.err.println("MazeSolver failed.  Reason: " + e.getMessage());
+            logger.error("MazeSolver failed.  Reason: " + e.getMessage());
+            logger.error("PATH NOT COMPUTED");
         }
-       
-       
 
+        logger.info("End of MazeRunner");
+        
+    }
+
+
+    private static String solveMaze(String method, Maze maze) throws Exception {
+        logger.info("Computing path");
+        switch (method) {
+            case "righthand" -> {
+                logger.debug("RightHand algorithm chosen.");
+                RightHandSolver path= new RightHandSolver(maze);
+                return path.findFactorizedPath();
+            }
+            case "bfs" -> {
+                logger.debug("BFS graph algorithm chosen.");
+                RightHandSolver path= new RightHandSolver(maze);
+                return path.findFactorizedPath();
+            }
+            default -> {
+                throw new Exception("Maze solving method '" + method + "' not supported.");
+            }
+        }
+
+        
        
-        
-        
-        
-        
+    }
+
+
+
+    private static Options getParserOptions() {
+        Options options = new Options();
+
+        Option fileOption = new Option("i", true, "File that contains maze");
+        fileOption.setRequired(true);
+        options.addOption(fileOption);
+
+        options.addOption(new Option("p", true, "Path to be verified in maze"));
+        options.addOption(new Option("method", true, "Specify which path computation algorithm will be used"));
+
+        return options;
     }
 }

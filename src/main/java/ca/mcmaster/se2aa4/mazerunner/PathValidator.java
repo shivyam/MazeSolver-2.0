@@ -1,6 +1,7 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Arrays;
 public class PathValidator{
 
@@ -15,27 +16,30 @@ public class PathValidator{
     }
 
     //Converts and returns user input path in canonical form, and strips all whitespace fro inputted path
-    public ArrayList<String> convertUserPath(String userPath){
+    public List<String> convertUserPath(String userPath){
         //strips whitespace from user input path
         String path = userPath.replaceAll("\\s", "");
         String[] path_arr= path.split("");
-        ArrayList<String> canonicalPath= new ArrayList<>();
-        int repetition=1;
+        List<String> expanded = new ArrayList<String>();
 
-        for(int i=0;i<path_arr.length;i++){
-            if(!(path_arr[i].equals("F")) && !(path_arr[i].equals("L")) &&!(path_arr[i].equals("R"))){
-                repetition= Integer.parseInt(path_arr[i]);
-                continue;
-            }
+        for (int i = 0; i < path_arr.length; i++) {
+            if (!Character.isDigit(path_arr[i].charAt(0))) {
+                expanded.add(path_arr[i]);
+            } else {
+                int count = 0;
+                int digit = 0;
+                do {
+                    count *= (int) Math.pow(10, digit++);
+                    count += Character.getNumericValue(path.charAt(i++));
+                } while (Character.isDigit(path_arr[i].charAt(0)));
 
-            else{
-                for(int j=0;j<repetition;j++){
-                    canonicalPath.add(path_arr[i]);
+                for(int j=0;j<count;j++){
+                    expanded.add(path_arr[i]);
                 }
-                repetition=1;
             }
         }
-        return canonicalPath;
+
+        return expanded;
     }
 
 
@@ -45,22 +49,47 @@ public class PathValidator{
         if (userPath.equals("")){
             return "";
         }
-        ArrayList<String> path= convertUserPath(userPath);
-       
+
+        if (checkLeftToRight()){
+            return "correct path";
+        }
+        else if(checkRightToLeft()){
+            return "correct path";
+        }
+        else{
+            return "incorrect path";
+        }
+
+    }
+
+
+    public boolean checkLeftToRight(){
         int currColumn=0;
         int currRow= dummyMaze.findEntryTile();
         int endRow = dummyMaze.findExitTile();
+        return traverseMaze(currColumn, currRow, endRow);
+    }
 
+    public boolean checkRightToLeft(){
+        int currColumn= dummyMaze.getWidth();
+        int currRow= dummyMaze.findExitTile();
+        int endRow = dummyMaze.findEntryTile();
+        dir.setDirection("west");
+        return traverseMaze(currColumn, currRow, endRow);
+
+    }
+
+    public boolean traverseMaze(int currColumn, int currRow, int endRow){
+        List<String> path= convertUserPath(userPath);
         int width= dummyMaze.getWidth();
         int height = dummyMaze.getHeight();
-
         int index=0;
         while(currColumn<=(width-1) && currColumn>=0 && currRow>=0 && currRow<=(height-1) && index<path.size()){
 
                 //if current tile is a wall, this automatically means that the path is incorrect
                 //terminates path check immediately
                 if(dummyMaze.getTile(currRow,currColumn).equals("WALL ")){
-                    return "incorrect path";
+                    return false;
                 }
 
                 if(path.get(index).equals("F")){
@@ -94,51 +123,50 @@ public class PathValidator{
         
         //checks if final position is the maze's exit tile
         if(currRow==(endRow) && currColumn==(width-1) && index==path.size()){
-                return "correct path";
+                return true;
         }
         else{
-            return "incorrect path";
+            return false;
         }
     }
 
 
     //turns user right by changing the direction they are facing based on their current direction
-    public void turnRight(){
-        String direction= dir.getDirection();
-        if(direction.equals("east")){
-            dir.setDirection("south");
-        }
-        else if(direction.equals("south")){
-            dir.setDirection("west");
-        }
-        else if(direction.equals("west")){
-            dir.setDirection("north");
-        }
-        else{
-            dir.setDirection("east");
+    public void turnRight() {
+        String direction = dir.getDirection();
+        switch (direction) {
+            case "east":
+                dir.setDirection("south");
+                break;
+            case "south":
+                dir.setDirection("west");
+                break;
+            case "west":
+                dir.setDirection("north");
+                break;
+            default:
+                dir.setDirection("east");
+                break;
         }
     }
-
+    
 
     //turns user left by changing the direction they are facing based on their current direction
-    public void turnLeft(){
-        String direction= dir.getDirection();
-        if(direction.equals("east")){
-            dir.setDirection("north");
-        }
-        else if(direction.equals("south")){
-            dir.setDirection("east");
-        }
-        else if(direction.equals("west")){
-            dir.setDirection("south");
-        }
-        else{
-            dir.setDirection("west");
+    public void turnLeft() {
+        String direction = dir.getDirection();
+        switch (direction) {
+            case "east":
+                dir.setDirection("north");
+                break;
+            case "south":
+                dir.setDirection("east");
+                break;
+            case "west":
+                dir.setDirection("south");
+                break;
+            default:
+                dir.setDirection("west");
+                break;
         }
     }
-
-
-        
-    
-    
 }
