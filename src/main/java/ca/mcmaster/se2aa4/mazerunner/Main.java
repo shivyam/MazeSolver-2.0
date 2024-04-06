@@ -38,8 +38,8 @@ public class Main {
             }
             
                 Maze mazeTest= new Maze(userMaze);
-                FindPath path= new FindPath(mazeTest);
-                CheckPath check= new CheckPath(mazeTest, userPath);
+                RightHandSolver path= new RightHandSolver(mazeTest);
+                PathValidator check= new PathValidator(mazeTest, userPath);
                 if((userPath.equals(""))){
                     logger.info(path.findFactorizedPath());
                 }

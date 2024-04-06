@@ -2,13 +2,13 @@ package ca.mcmaster.se2aa4.mazerunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-public class CheckPath{
+public class PathValidator{
 
     public Maze dummyMaze;
     public String userPath;
     Direction dir;
 
-    public CheckPath(Maze maze, String userPath){
+    public PathValidator(Maze maze, String userPath){
         this.dummyMaze= maze;
         this.userPath= userPath;
         this.dir= new Direction(dummyMaze);

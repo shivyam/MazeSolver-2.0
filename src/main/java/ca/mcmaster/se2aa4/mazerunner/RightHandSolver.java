@@ -2,12 +2,12 @@ package ca.mcmaster.se2aa4.mazerunner;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class FindPath implements MazeExploration{
+public class RightHandSolver implements MazeExploration{
 
     private Maze dummyMaze;
 
 
-    public FindPath(Maze maze){
+    public RightHandSolver(Maze maze){
         this.dummyMaze= maze;
     }
 
@@ -23,7 +23,7 @@ public class FindPath implements MazeExploration{
             pos.moveForward();
             path+="F";
         }
-        while(pos.getCurrRow()!=endRow|| pos.getCurrColumn()!=(pos.getWidth()-1)){
+        while(pos.getCurrRow()!=endRow|| pos.getCurrColumn()!=(dummyMaze.getWidth()-1)){
             if(pos.canTurnRight()){
                 pos.turnRight();
                 path+="R";
