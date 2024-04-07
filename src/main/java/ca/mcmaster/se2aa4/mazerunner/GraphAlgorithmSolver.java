@@ -15,18 +15,11 @@ public class GraphAlgorithmSolver{
 
 
     public String solve(Maze maze){
-
-
         this.maze= maze;
-
-
-
-
         for(int i=0;i<maze.getHeight();i++){
             List<Boolean> markedLine = new ArrayList<>(Collections.nCopies(maze.getWidth(), false));
             markedNodes.add(markedLine);
         }
-
 
         for (int i = 0; i < maze.getHeight(); i++) {
             List<List<String>> prevNodeLine = new ArrayList<>();
@@ -35,7 +28,6 @@ public class GraphAlgorithmSolver{
             }
             prevNode.add(prevNodeLine);
         }
-
 
         return breadthFS();
        

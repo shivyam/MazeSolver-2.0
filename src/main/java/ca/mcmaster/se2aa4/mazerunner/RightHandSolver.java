@@ -1,8 +1,6 @@
 package ca.mcmaster.se2aa4.mazerunner;
-import java.util.ArrayList;
-import java.util.Arrays;
 
-public class RightHandSolver implements MazeExploration{
+public class RightHandSolver extends MazeExploration{
 
     private Maze dummyMaze;
 
@@ -12,50 +10,9 @@ public class RightHandSolver implements MazeExploration{
     }
 
 
-    //finds path in the form "FFFRRFFLLF"
-    public String findCanonicalPath(){
-        int endRow= dummyMaze.findExitTile();
-        String path="";
-        Direction dir= new Direction(dummyMaze);
-        Position pos= new Position(dummyMaze);
-
-        if(pos.canMoveForward()){
-            pos.moveForward();
-            path+="F";
-        }
-        while(pos.getCurrRow()!=endRow|| pos.getCurrColumn()!=(dummyMaze.getWidth()-1)){
-            if(pos.canTurnRight()){
-                pos.turnRight();
-                path+="R";
-                pos.moveForward();
-                path+="F";
-            }
-            else if(pos.canMoveForward()){
-                pos.moveForward();
-                path+="F";
-            }
-            else if(pos.canTurnLeft()){
-                pos.turnLeft();
-                path+="L";
-                pos.moveForward();
-                path+="F";
-            }
-            else{
-                pos.turnLeft();
-                path+="L";
-                pos.turnLeft();
-                path+="L";
-                pos.moveForward();
-                path+="F";
-            }
-        }
-        return path;
-    }
-    
-
     //uses findCanonicalPath method to find maze path, then outputs path in the form "3F2R2F2LF"
     public String findFactorizedPath(){
-        String path = findCanonicalPath();
+        String path = findCanonicalPath(dummyMaze);
         String[] path_arr= path.split("");
         String strFactorizedPath="";
         if(path_arr.length==0){

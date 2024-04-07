@@ -6,7 +6,6 @@ import org.apache.logging.log4j.Logger;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Maze{
@@ -14,7 +13,6 @@ public class Maze{
     private static final Logger logger = LogManager.getLogger();
 
     private List<List<String>> maze= new ArrayList<>();
-    private int width;
 
     
     public Maze(String filePath) throws Exception {
@@ -32,6 +30,7 @@ public class Maze{
             }
             maze.add(row);
         }
+        reader.close();
     }
 
     public List<List<String>> getMaze(){
