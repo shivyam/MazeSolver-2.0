@@ -29,13 +29,13 @@ public class Position{
     
         switch (direction) {
             case "east":
-                return !dummyMaze.getTile(currRow + 1, currColumn).equals("WALL ");
+                return !(dummyMaze.getTile(currRow + 1, currColumn)==0);
             case "south":
-                return !dummyMaze.getTile(currRow, currColumn - 1).equals("WALL ");
+                return !(dummyMaze.getTile(currRow, currColumn - 1)==0);
             case "west":
-                return !dummyMaze.getTile(currRow - 1, currColumn).equals("WALL ");
+                return !(dummyMaze.getTile(currRow - 1, currColumn)==0);
             default:
-                return !dummyMaze.getTile(currRow, currColumn + 1).equals("WALL ");
+                return !(dummyMaze.getTile(currRow, currColumn + 1)==0);
         }
     }
     
@@ -46,13 +46,13 @@ public class Position{
     
         switch (direction) {
             case "east":
-                return !dummyMaze.getTile(currRow - 1, currColumn).equals("WALL ");
+                return !(dummyMaze.getTile(currRow - 1, currColumn)==0);
             case "south":
-                return !dummyMaze.getTile(currRow, currColumn + 1).equals("WALL ");
+                return !(dummyMaze.getTile(currRow, currColumn + 1)==0);
             case "west":
-                return !dummyMaze.getTile(currRow + 1, currColumn).equals("WALL ");
+                return !(dummyMaze.getTile(currRow + 1, currColumn)==0);
             default:
-                return !dummyMaze.getTile(currRow, currColumn - 1).equals("WALL ");
+                return !(dummyMaze.getTile(currRow, currColumn - 1)==0);
         }
     }
     
@@ -105,13 +105,13 @@ public class Position{
     
         switch (direction) {
             case "north":
-                return (currRow - 1 >= 0 && !dummyMaze.getTile(currRow - 1, currColumn).equals("WALL "));
+                return (currRow - 1 >= 0 && !(dummyMaze.getTile(currRow - 1, currColumn)==0));
             case "east":
-                return (currColumn + 1 <= (dummyMaze.getWidth() - 1) && !dummyMaze.getTile(currRow, currColumn + 1).equals("WALL "));
+                return (currColumn + 1 < dummyMaze.getWidth() && !(dummyMaze.getTile(currRow, currColumn + 1)==0));
             case "south":
-                return (currRow + 1 <= (dummyMaze.getHeight() - 1) && !dummyMaze.getTile(currRow + 1, currColumn).equals("WALL "));
+                return (currRow + 1 <dummyMaze.getHeight() && !(dummyMaze.getTile(currRow + 1, currColumn)==0));
             case "west":
-                return (currColumn - 1 >= 0 && !dummyMaze.getTile(currRow, currColumn - 1).equals("WALL "));
+                return (currColumn - 1 >= 0 && !(dummyMaze.getTile(currRow, currColumn - 1)==0));
             default:
                 return false;
         }
@@ -137,5 +137,32 @@ public class Position{
                 break;
         }
     }
+
+    public boolean canCheckUp(){
+        if (currRow-1>=0 && dummyMaze.getTile(currRow-1,currColumn)==1){
+            return true;
+        }
+        return false;
+    }
     
+    public boolean canCheckDown(){
+        if (currRow+1<dummyMaze.getHeight() && dummyMaze.getTile(currRow+1,currColumn)==1){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean canCheckLeft(){
+        if (currColumn-1>=0 && dummyMaze.getTile(currRow,currColumn-1)==1){
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean canCheckRight(){
+        if (currColumn+1<dummyMaze.getWidth() && dummyMaze.getTile(currRow,currColumn+1)==1){
+            return true;
+        }
+        return false;
+    }
 }

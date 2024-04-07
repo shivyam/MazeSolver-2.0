@@ -47,12 +47,12 @@ public class Main {
             case "righthand" -> {
                 logger.debug("RightHand algorithm chosen.");
                 RightHandSolver path= new RightHandSolver(maze);
-                return path.findFactorizedPath();
+                return path.findFactorizedPath(maze);
             }
             case "bfs" -> {
                 logger.debug("BFS graph algorithm chosen.");
                 RightHandSolver path= new RightHandSolver(maze);
-                return path.findFactorizedPath();
+                return path.findFactorizedPath(maze);
             }
             default -> {
                 throw new Exception("Maze solving method '" + method + "' not supported.");

@@ -12,7 +12,7 @@ public class Maze{
 
     private static final Logger logger = LogManager.getLogger();
 
-    private List<List<String>> maze= new ArrayList<>();
+    private List<List<Integer>> maze= new ArrayList<>();
 
     
     public Maze(String filePath) throws Exception {
@@ -20,12 +20,12 @@ public class Maze{
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
         String line;
         while ((line = reader.readLine()) != null) {
-            List<String> row = new ArrayList<>();
+            List<Integer> row = new ArrayList<>();
             for (int idx = 0; idx < line.length(); idx++) {
                 if (line.charAt(idx) == '#') {
-                    row.add("WALL ");
+                    row.add(0);
                 } else if (line.charAt(idx) == ' ') {
-                    row.add("PASS ");
+                    row.add(1);
                 }
             }
             maze.add(row);
@@ -33,7 +33,7 @@ public class Maze{
         reader.close();
     }
 
-    public List<List<String>> getMaze(){
+    public List<List<Integer>> getMaze(){
         return maze;
     }
 
@@ -57,8 +57,8 @@ public class Maze{
 
 
     //returns if current tile is a wall or open
-    public String getTile(int rowIndex, int columnIndex){
-        ArrayList<String> row= new ArrayList<>(maze.get(rowIndex));
+    public Integer getTile(int rowIndex, int columnIndex){
+        ArrayList<Integer> row= new ArrayList<>(maze.get(rowIndex));
         return row.get(columnIndex);
     }
 
@@ -66,9 +66,9 @@ public class Maze{
     //searches last column in maze to find ending position
     public int findExitTile(){
         for (int i=0;i<maze.size();i++){
-            ArrayList<String> row = new ArrayList<String>(maze.get(i));
+            ArrayList<Integer> row = new ArrayList<Integer>(maze.get(i));
 
-            if (row.get(row.size()-1).equals("PASS ")){
+            if (row.get(row.size()-1)==1){
                 return i;
             }
         }
@@ -79,9 +79,9 @@ public class Maze{
     //searches first column in maze to find starting position
     public int findEntryTile(){
         for (int i=0;i<maze.size();i++){
-            ArrayList<String> row = new ArrayList<String>(maze.get(i));
+            ArrayList<Integer> row = new ArrayList<Integer>(maze.get(i));
 
-            if (row.get(0).equals("PASS ")){
+            if (row.get(0)==1){
                 return i;
             }
         }
@@ -91,7 +91,7 @@ public class Maze{
     //to help visualize the maze when debugging
     public void printMaze(){
         for (int i=0; i<maze.size(); i++) {
-            ArrayList<String> row = new ArrayList<String>(maze.get(i));
+            ArrayList<Integer> row = new ArrayList<Integer>(maze.get(i));
             for (int j=0; j<row.size(); j++) {
                 System.out.print(row.get(j));
             }

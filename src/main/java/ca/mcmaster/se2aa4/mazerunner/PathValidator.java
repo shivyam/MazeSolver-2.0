@@ -2,6 +2,7 @@ package ca.mcmaster.se2aa4.mazerunner;
 
 import java.util.ArrayList;
 import java.util.List;
+
 public class PathValidator{
 
     public Maze dummyMaze;
@@ -37,7 +38,6 @@ public class PathValidator{
                 }
             }
         }
-
         return expanded;
     }
 
@@ -48,7 +48,6 @@ public class PathValidator{
         if (userPath.equals("")){
             return "";
         }
-
         if (checkLeftToRight()){
             return "correct path";
         }
@@ -58,7 +57,6 @@ public class PathValidator{
         else{
             return "incorrect path";
         }
-
     }
 
 
@@ -87,7 +85,7 @@ public class PathValidator{
 
                 //if current tile is a wall, this automatically means that the path is incorrect
                 //terminates path check immediately
-                if(dummyMaze.getTile(currRow,currColumn).equals("WALL ")){
+                if(dummyMaze.getTile(currRow,currColumn)==0){
                     return false;
                 }
 
