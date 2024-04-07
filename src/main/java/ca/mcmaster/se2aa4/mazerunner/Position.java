@@ -8,10 +8,10 @@ public class Position{
     public static Direction dir;
 
     public Position(Maze maze){
-        this.dummyMaze= maze;
-        this.dir= new Direction(dummyMaze);
-        this.currRow= dummyMaze.findEntryTile();
-        this.currColumn=0;
+        Position.dummyMaze= maze;
+        Position.dir= new Direction(dummyMaze);
+        Position.currRow= dummyMaze.findEntryTile();
+        Position.currColumn=0;
     }
 
     public int getCurrRow(){
@@ -138,31 +138,5 @@ public class Position{
         }
     }
 
-    public boolean canCheckUp(){
-        if (currRow-1>=0 && dummyMaze.getTile(currRow-1,currColumn)==1){
-            return true;
-        }
-        return false;
-    }
     
-    public boolean canCheckDown(){
-        if (currRow+1<dummyMaze.getHeight() && dummyMaze.getTile(currRow+1,currColumn)==1){
-            return true;
-        }
-        return false;
-    }
-
-    public boolean canCheckLeft(){
-        if (currColumn-1>=0 && dummyMaze.getTile(currRow,currColumn-1)==1){
-            return true;
-        }
-        return false;
-    }
-    
-    public boolean canCheckRight(){
-        if (currColumn+1<dummyMaze.getWidth() && dummyMaze.getTile(currRow,currColumn+1)==1){
-            return true;
-        }
-        return false;
-    }
 }

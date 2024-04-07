@@ -51,8 +51,10 @@ public class Main {
             }
             case "bfs" -> {
                 logger.debug("BFS graph algorithm chosen.");
-                RightHandSolver path= new RightHandSolver(maze);
-                return path.findFactorizedPath(maze);
+                //RightHandSolver path= new RightHandSolver(maze);
+                GraphAlgorithmSolver path= new GraphAlgorithmSolver(maze);
+                return path.solve();
+                //return "bfs done";
             }
             default -> {
                 throw new Exception("Maze solving method '" + method + "' not supported.");
