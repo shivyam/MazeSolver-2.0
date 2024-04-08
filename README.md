@@ -1,8 +1,9 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/8jM7fhXE)
 # Assignment A3 - Maze Runner
-# Parts of this code uses code from AlexandreLachance's A1 solution code
+
 
   * **Student**: [Shivya Mehta](mehtas47@mcmaster.ca)
+  * **Authors**: Shivya Mehta, Alexandre Lachance
   * **Program**: B. Eng. In Software Engineering
   * **Course code**: SFWRENG 2AA4
   * **Course Title**: Software Design I - Introduction to Software Development 
