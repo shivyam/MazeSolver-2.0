@@ -47,13 +47,20 @@ public class Main {
             case "righthand" -> {
                 logger.debug("RightHand algorithm chosen.");
                 RightHandSolver path= new RightHandSolver(maze);
-                return path.findFactorizedPath(maze);
+                return path.findFactorizedPath();
             }
             case "bfs" -> {
                 logger.debug("BFS graph algorithm chosen.");
                 //RightHandSolver path= new RightHandSolver(maze);
                 GraphAlgorithmSolver path= new GraphAlgorithmSolver(maze);
-                return path.findFactorizedPath(maze);
+                return path.findFactorizedPath();
+                //return "bfs done";
+            }
+            case "bfs2" -> {
+                logger.debug("BFS graph algorithm chosen.");
+                //RightHandSolver path= new RightHandSolver(maze);
+                Redo path= new Redo(maze);
+                return path.findFactorizedPath();
                 //return "bfs done";
             }
             default -> {
