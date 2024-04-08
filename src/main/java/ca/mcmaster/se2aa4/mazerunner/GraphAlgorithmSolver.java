@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.LinkedList;
 
-public class GraphAlgorithmSolver{
+public class GraphAlgorithmSolver extends MazeExploration{
 
 
     Maze maze;
@@ -46,12 +46,7 @@ public class GraphAlgorithmSolver{
         for(int i=0;i<maze.getHeight();i++){
             adjacencyList.add(new ArrayList<List<Integer[]>>());
             for(int j=0;j<maze.getWidth();j++){
-                System.out.print("Row: " + i + "   Column: "+ j + ":           " );
-                for (Integer[] node: adjacentNodesList(i,j) ){
-                    System.out.print("[" + node[0] + ", " + node[1] + "],  ");
-                }
                 adjacencyList.get(i).add(adjacentNodesList(i,j));
-                System.out.println();
             }
         }
     }
@@ -76,19 +71,11 @@ public class GraphAlgorithmSolver{
 
 
     public String solve(){
-        String path= breadthFS();
-        return path;
-       
-    }
-
-
-
-    public String breadthFS(){
         Queue<Integer[]> queue = new LinkedList<>();
         queue.add(new Integer[] {maze.findEntryTile(),0});
 
         //Update parent node list: set previous node to indexes null
-        ArrayList<String> nodeParent= new ArrayList<>(Arrays.asList(null, null, "null"));
+        ArrayList<String> nodeParent= new ArrayList<>(Arrays.asList(null, null, "null", "east"));
         parentNodeList.get(maze.findEntryTile()).set(0, nodeParent);
         
         while (!queue.isEmpty()){
@@ -113,50 +100,56 @@ public class GraphAlgorithmSolver{
                 break;
             }
         }
-        System.out.println("We made it");
         return buildPath();
     }
 
 
 
-
-
     public String buildPath(){
-        int currRow= maze.findExitTile();
-        int currColumn= maze.getWidth()-1;
+        Integer currRow= maze.findExitTile();
+        Integer currColumn= maze.getWidth()-1;
         StringBuilder path = new StringBuilder();
+   
         while(!parentNodeList.get(currRow).get(currColumn).get(2).equals("null")){
-
-            System.out.println("Current Row: " + currRow + "   Current Column: " + currColumn);
             path.insert(0,parentNodeList.get(currRow).get(currColumn).get(2));
-            currRow= Integer.parseInt(parentNodeList.get(currRow).get(currColumn).get(0));
+
+            Integer row= Integer.parseInt(parentNodeList.get(currRow).get(currColumn).get(0));
             currColumn= Integer.parseInt(parentNodeList.get(currRow).get(currColumn).get(1));
+            currRow= row;     
         }
         return path.toString();
     }
-
-
-
-
-
-
-
-
 
 
     public void setParentNode(Integer row, Integer column,Integer adjRow, Integer adjCol){
         List<String> nodeParent = new ArrayList<>();
         nodeParent.add(String.valueOf(row));
         nodeParent.add(String.valueOf(column));
-        nodeParent.add(moveToChild(row, column, adjRow, adjCol));
-        nodeParent.add(dir.getDirection());
+        String move= moveToChild(row, column, adjRow, adjCol);
+        nodeParent.add(move);
+        String dir= classifyMove(row, column, adjRow, adjCol);
+
+        if (dir.equals("UP")){
+            nodeParent.add("north");
+        }
+        else if (dir.equals("DOWN")){
+            nodeParent.add("south");
+        }
+        else if (dir.equals("RIGHT")){
+            nodeParent.add("east");
+        }
+        else{
+            nodeParent.add("west");
+        }
         parentNodeList.get(adjRow).set(adjCol, nodeParent);
     }
 
+
     public String moveToChild(Integer parentRow, Integer parentCol, Integer childRow, Integer childCol){
         String move= classifyMove(parentRow, parentCol, childRow, childCol);
+        String direction= parentNodeList.get(parentRow).get(parentCol).get(3);
 
-        if (dir.getDirection().equals("east")){
+        if (direction.equals("east")){
             if (move.equals("RIGHT")){
                 return "F";
             }
@@ -170,7 +163,7 @@ public class GraphAlgorithmSolver{
                 return "RF";
             }
         }
-        else if (dir.getDirection().equals("west")){
+        else if (direction.equals("west")){
             if (move.equals("RIGHT")){
                 return "LLF";
             }
@@ -184,7 +177,7 @@ public class GraphAlgorithmSolver{
                 return "LF";
             }
         }
-        else if (dir.getDirection().equals("north")){
+        else if (direction.equals("north")){
             if (move.equals("RIGHT")){
                 return "RF";
             }
@@ -198,7 +191,7 @@ public class GraphAlgorithmSolver{
                 return "LLF";
             }
         }
-        else if (dir.getDirection().equals("south")){
+        else if (direction.equals("south")){
             if (move.equals("RIGHT")){
                 return "LF";
             }

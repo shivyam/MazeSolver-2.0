@@ -53,7 +53,7 @@ public class Main {
                 logger.debug("BFS graph algorithm chosen.");
                 //RightHandSolver path= new RightHandSolver(maze);
                 GraphAlgorithmSolver path= new GraphAlgorithmSolver(maze);
-                return path.solve();
+                return path.findFactorizedPath(maze);
                 //return "bfs done";
             }
             default -> {
