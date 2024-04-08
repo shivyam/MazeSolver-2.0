@@ -208,9 +208,6 @@ public class GraphAlgorithmSolver extends MazeExploration{
         return "";
     }
 
-
-
-
     public String classifyMove(Integer parentRow, Integer parentCol, Integer childRow, Integer childCol){
         if (parentRow+1==childRow){
             return "DOWN";
@@ -228,9 +225,6 @@ public class GraphAlgorithmSolver extends MazeExploration{
             return "null";
         }
     }
-
-
-
 
     public boolean canCheckUp(int currRow, int currColumn){
         if (currRow-1>=0 && maze.getTile(currRow-1,currColumn)==1){
