@@ -2,6 +2,7 @@ package ca.mcmaster.se2aa4.mazerunner;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -55,6 +56,23 @@ public class GraphAlgorithmSolver{
         }
     }
 
+    public List<Integer[]> adjacentNodesList(int currRow, int currColumn){
+        List<Integer[]> adjacentNodes= new ArrayList<>();
+
+        if (canCheckUp(currRow,currColumn)){
+            adjacentNodes.add(new Integer[] {currRow-1, currColumn});
+        }
+        if (canCheckDown(currRow,currColumn)){
+            adjacentNodes.add(new Integer[] {currRow+1, currColumn});
+        }
+        if (canCheckLeft(currRow,currColumn)){
+            adjacentNodes.add(new Integer[] {currRow, currColumn-1});
+        }
+        if (canCheckRight(currRow,currColumn)){
+            adjacentNodes.add(new Integer[] {currRow, currColumn+1});
+        }
+        return adjacentNodes;
+    }
 
 
     public String solve(){
@@ -67,79 +85,40 @@ public class GraphAlgorithmSolver{
 
     public String breadthFS(){
         Queue<Integer[]> queue = new LinkedList<>();
+        queue.add(new Integer[] {maze.findEntryTile(),0});
 
-        Integer column= 0;
-        Integer row = maze.findEntryTile();
-
+        //Update parent node list: set previous node to indexes null
+        ArrayList<String> nodeParent= new ArrayList<>(Arrays.asList(null, null, "null"));
+        parentNodeList.get(maze.findEntryTile()).set(0, nodeParent);
         
-        queue.add(new Integer[] {row,column});
-
-     
-        ArrayList<String> initialNodeParent= new ArrayList<>();
-
-        //Update parent node list: set previous node to null, set move to null
-
-        //parent node row
-        initialNodeParent.add(null);
-        //parent node column
-        initialNodeParent.add(null);
-        //how to get from parent node to child node (e.g. "LF")
-        initialNodeParent.add("null");
-        parentNodeList.get(row).set(column, initialNodeParent);
-
-        //Update marked node list
-        Integer[] currNodeCoords= queue.remove();
-        row= currNodeCoords[0];
-        column= currNodeCoords[1];
-
-        System.out.println("Current Row: " + row + "   Current Column: " + column);
-
-        //set to true, meaning it has been visited
-        markedNodes.get(row).set(column, true);
-
-        //add adjacent nodes to queue
-        for(Integer[] adjacentNode: adjacencyList.get(row).get(column)){
-            queue.add(adjacentNode);
-            ArrayList<String> nodeParent= new ArrayList<>();
-            nodeParent.add(String.valueOf(row));
-            nodeParent.add(String.valueOf(column));
-            System.out.println("Parent node: " + "[" + row + ", " + column + "]");
-            System.out.println("Move: "+ moveToChild(row, column, adjacentNode[0], adjacentNode[1]));
-            nodeParent.add(moveToChild(row, column, adjacentNode[0], adjacentNode[1]));
-            parentNodeList.get(adjacentNode[0]).set(adjacentNode[1], nodeParent);
-        }
-
         while (!queue.isEmpty()){
-            System.out.println(queue.size());
-            currNodeCoords= queue.remove();
-            row= currNodeCoords[0];
-            column= currNodeCoords[1];
+            //Update marked node list
+            Integer[] currNodeCoords= queue.remove();
+            Integer row= currNodeCoords[0];
+            Integer column= currNodeCoords[1];
 
-            //System.out.println("Current Row: " + row + "   Current Column: " + column);
             //set to true, meaning it has been visited
             markedNodes.get(row).set(column, true);
 
             //add adjacent nodes to queue
             for(Integer[] adjacentNode: adjacencyList.get(row).get(column)){
-                if(!markedNodes.get(adjacentNode[0]).get(adjacentNode[1])){
+                int adjRow = adjacentNode[0];
+                int adjCol = adjacentNode[1];
+                if(!markedNodes.get(adjRow).get(adjCol)){
                     queue.add(adjacentNode);
-                    ArrayList<String> nodeParent= new ArrayList<>();
-                    nodeParent.add(String.valueOf(row));
-                    nodeParent.add(String.valueOf(column));
-                    nodeParent.add(moveToChild(row, column, adjacentNode[0], adjacentNode[1]));
-                    parentNodeList.get(adjacentNode[0]).set(adjacentNode[1], nodeParent);
+                    setParentNode(row, column, adjRow, adjCol);
                 }
-
             }
-
-
-            if(row== maze.findExitTile() && column== maze.getWidth()-1 ){
+            if(row== maze.findExitTile() && column== maze.getWidth()- 1){
                 break;
             }
         }
         System.out.println("We made it");
         return buildPath();
     }
+
+
+
 
 
     public String buildPath(){
@@ -154,6 +133,24 @@ public class GraphAlgorithmSolver{
             currColumn= Integer.parseInt(parentNodeList.get(currRow).get(currColumn).get(1));
         }
         return path.toString();
+    }
+
+
+
+
+
+
+
+
+
+
+    public void setParentNode(Integer row, Integer column,Integer adjRow, Integer adjCol){
+        List<String> nodeParent = new ArrayList<>();
+        nodeParent.add(String.valueOf(row));
+        nodeParent.add(String.valueOf(column));
+        nodeParent.add(moveToChild(row, column, adjRow, adjCol));
+        nodeParent.add(dir.getDirection());
+        parentNodeList.get(adjRow).set(adjCol, nodeParent);
     }
 
     public String moveToChild(Integer parentRow, Integer parentCol, Integer childRow, Integer childCol){
@@ -173,7 +170,6 @@ public class GraphAlgorithmSolver{
                 return "RF";
             }
         }
-
         else if (dir.getDirection().equals("west")){
             if (move.equals("RIGHT")){
                 return "LLF";
@@ -188,8 +184,6 @@ public class GraphAlgorithmSolver{
                 return "LF";
             }
         }
-
-
         else if (dir.getDirection().equals("north")){
             if (move.equals("RIGHT")){
                 return "RF";
@@ -204,7 +198,6 @@ public class GraphAlgorithmSolver{
                 return "LLF";
             }
         }
-
         else if (dir.getDirection().equals("south")){
             if (move.equals("RIGHT")){
                 return "LF";
@@ -219,11 +212,11 @@ public class GraphAlgorithmSolver{
                 return "F";
             }
         }
-
         return "";
-
-
     }
+
+
+
 
     public String classifyMove(Integer parentRow, Integer parentCol, Integer childRow, Integer childCol){
         if (parentRow+1==childRow){
@@ -235,10 +228,15 @@ public class GraphAlgorithmSolver{
         else if(parentCol+1== childCol){
             return "RIGHT";
         }
-        else{
+        else if(parentCol-1== childCol){
             return "LEFT";
         }
+        else{
+            return "null";
+        }
     }
+
+
 
 
     public boolean canCheckUp(int currRow, int currColumn){
@@ -269,23 +267,5 @@ public class GraphAlgorithmSolver{
         return false;
     }
 
-   
-    public List<Integer[]> adjacentNodesList(int currRow, int currColumn){
-        List<Integer[]> adjacentNodes= new ArrayList<>();
-
-        if (canCheckUp(currRow,currColumn)){
-            adjacentNodes.add(new Integer[] {currRow-1, currColumn});
-        }
-        if (canCheckDown(currRow,currColumn)){
-            adjacentNodes.add(new Integer[] {currRow+1, currColumn});
-        }
-        if (canCheckLeft(currRow,currColumn)){
-            adjacentNodes.add(new Integer[] {currRow, currColumn-1});
-        }
-        if (canCheckRight(currRow,currColumn)){
-            adjacentNodes.add(new Integer[] {currRow, currColumn+1});
-        }
-        return adjacentNodes;
-    }
 }
 
