@@ -57,6 +57,11 @@ When no logs are activated, the programs only print the computed path on the sta
 
 ```
 mosser@azrael A1-Template % java -jar target/mazerunner.jar -i ./examples/straight.maz.txt
+FLFR2FL6FR4FR2FL2FR2FLF
+mosser@azrael A1-Template %
+```
+```
+mosser@azrael A1-Template % java -jar target/mazerunner.jar -method bfs -i ./examples/small.maz.txt
 4F
 mosser@azrael A1-Template %
 ```
