@@ -1,26 +1,16 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-
 import java.util.Queue;
 import java.util.LinkedList;
 
 public class Redo extends MazeExploration{
-
-
     Maze maze;
-    Direction dir;
-
     List<List<Node>> nodes= new ArrayList<>();
 
     public Redo(Maze maze){
         this.maze= maze;
-        this.dir= new Direction(maze);
-
         //create all nodes
         for (int i = 0; i < maze.getHeight(); i++) {
             List<Node> node = new ArrayList<>();
@@ -29,8 +19,6 @@ public class Redo extends MazeExploration{
             }
             nodes.add(node);
         }
-
-
         adjacencyList();
     }
 
@@ -45,7 +33,6 @@ public class Redo extends MazeExploration{
 
     public void setAdjacentNodesList(int currRow, int currColumn){
         Node currNode= nodes.get(currRow).get(currColumn);
-
         if (canCheckUp(currRow,currColumn)){
             currNode.addAdjacentNode(new Integer[] {currRow-1, currColumn});
         }
@@ -58,31 +45,25 @@ public class Redo extends MazeExploration{
         if (canCheckRight(currRow,currColumn)){
             currNode.addAdjacentNode(new Integer[] {currRow, currColumn+1});
         }
-
     }
-
 
     public String solve(){
         Queue<Integer[]> queue = new LinkedList<>();
         queue.add(new Integer[] {maze.findEntryTile(),0});
 
-        //Update parent node list: set previous node to indexes null, parentRow, parentCol, move from parent to child, direction of parent
-        nodes.get(maze.findEntryTile()).get(0).setParentRow(null);
-        nodes.get(maze.findEntryTile()).get(0).setParentColumn(null);
-        nodes.get(maze.findEntryTile()).get(0).setMove("null");
-        nodes.get(maze.findEntryTile()).get(0).setDirection("east");
-  
-        
         while (!queue.isEmpty()){
             //Update marked node list
             Integer[] currNodeCoords= queue.remove();
-            Integer row= currNodeCoords[0];
-            Integer column= currNodeCoords[1];
-            Node currNode= nodes.get(row).get(column);
+            Integer currRow= currNodeCoords[0];
+            Integer currColumn= currNodeCoords[1];
+            Node currNode= nodes.get(currRow).get(currColumn);
+
+            if(currRow== maze.findExitTile() && currColumn== maze.getWidth()- 1){
+                break;
+            }
 
             //set to true, meaning it has been visited
             currNode.setMarkedTrue();
-
 
             //add adjacent nodes to queue
             for(Integer[] adjacentNodeCoord: currNode.getAdjacentNodesList()){
@@ -92,31 +73,30 @@ public class Redo extends MazeExploration{
                 if(!adjacentNode.getMarked()){
                     queue.add(adjacentNodeCoord);
                     adjacentNode.setParentDirection(currNode.getDirection());
-                    adjacentNode.setParentNode(row, column, adjRow, adjCol);
-                    
+                    adjacentNode.setNodeVariables(currRow, currColumn, adjRow, adjCol);
                 }
-            }
-            if(row== maze.findExitTile() && column== maze.getWidth()- 1){
-                break;
-            }
+            }    
         }
         return buildPath();
     }
 
 
-
     public String buildPath(){
-        Integer currRow= maze.findExitTile();
-        Integer currColumn= maze.getWidth()-1;
         StringBuilder path = new StringBuilder();
+
+        Integer currRow= maze.findExitTile();
+        Integer currColumn= maze.getWidth()-1; 
         Node currNode= nodes.get(currRow).get(currColumn);
         String move= currNode.getMove();
+
         while(!move.equals("null")){
             path.insert(0,move);
 
-            Integer row= Integer.parseInt(currNode.getParentRow());
+            Integer tempRow= Integer.parseInt(currNode.getParentRow());
             currColumn= Integer.parseInt(currNode.getParentColumn());
-            currRow= row;     
+            currRow= tempRow;
+            currNode= nodes.get(currRow).get(currColumn);
+            move= currNode.getMove();
         }
         return path.toString();
     }
@@ -148,6 +128,5 @@ public class Redo extends MazeExploration{
         }
         return false;
     }
-
 }
 

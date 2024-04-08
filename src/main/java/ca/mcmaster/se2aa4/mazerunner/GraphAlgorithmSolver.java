@@ -86,15 +86,18 @@ public class GraphAlgorithmSolver extends MazeExploration{
 
             //set to true, meaning it has been visited
             markedNodes.get(row).set(column, true);
+            System.out.println("Current Row: " + row + "   Current Column: "+ column);
 
             //add adjacent nodes to queue
             for(Integer[] adjacentNode: adjacencyList.get(row).get(column)){
                 int adjRow = adjacentNode[0];
                 int adjCol = adjacentNode[1];
                 if(!markedNodes.get(adjRow).get(adjCol)){
+                    System.out.println("Adjacent Row: " + adjRow + "   Adjacent Column: "+ adjCol);
                     queue.add(adjacentNode);
                     setParentNode(row, column, adjRow, adjCol);
                 }
+                System.out.println("--------------------------------");
             }
             if(row== maze.findExitTile() && column== maze.getWidth()- 1){
                 break;
