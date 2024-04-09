@@ -19,23 +19,22 @@ public class Node {
         this.parentCol= String.valueOf(column);
         this.movement= classifyMove(row, column, adjRow, adjCol);
         this.move= moveToChild(row, column, adjRow, adjCol);
-
-        switch (movement) {
-            case "UP":
-                setDirection("north");
-                break;
-            case "DOWN":
-                setDirection("south");
-                break;
-            case "RIGHT":
-                setDirection("east");
-                break;
-            default:
-                setDirection("west");
-                break;
-        }
+        this.direction= findNewDirection();
     }
 
+    private String findNewDirection(){
+        switch (movement) {
+            case "UP":
+                return "north";
+            case "DOWN":
+                return "south";
+            case "RIGHT":
+                return "east";
+            default:
+                return "west";
+        }
+    }
+    
     private String classifyMove(Integer parentRow, Integer parentCol, Integer childRow, Integer childCol){
         if (parentRow+1==childRow){
             return "DOWN";
