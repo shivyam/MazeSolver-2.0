@@ -2,16 +2,16 @@ package ca.mcmaster.se2aa4.mazerunner;
 
 public class Direction{
 
-    public Maze dummyMaze;
+    public Maze maze;
     public int height;
     public int width;
 
     public String direction="east";
 
     public Direction(Maze maze){
-        this.dummyMaze= maze;
-        this.height= dummyMaze.getHeight();
-        this.width= dummyMaze.getWidth();
+        this.maze= maze;
+        this.height= maze.getHeight();
+        this.width= maze.getWidth();
 
     }
 
@@ -58,6 +58,34 @@ public class Direction{
             return column;
         }
         return -1;
+    }
+
+    public boolean canCheckUp(int currRow, int currColumn){
+        if (currRow-1>=0 && maze.getTile(currRow-1,currColumn)==1){
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean canCheckDown(int currRow, int currColumn){
+        if (currRow+1<maze.getHeight() && maze.getTile(currRow+1,currColumn)==1){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean canCheckLeft(int currRow, int currColumn){
+        if (currColumn-1>=0 && maze.getTile(currRow,currColumn-1)==1){
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean canCheckRight(int currRow, int currColumn){
+        if (currColumn+1<maze.getWidth() && maze.getTile(currRow,currColumn+1)==1){
+            return true;
+        }
+        return false;
     }
 
 }

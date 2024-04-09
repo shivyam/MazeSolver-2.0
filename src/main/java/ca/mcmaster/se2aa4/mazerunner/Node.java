@@ -18,7 +18,7 @@ public class Node {
         this.parentRow= String.valueOf(row);
         this.parentCol= String.valueOf(column);
         this.movement= classifyMove(row, column, adjRow, adjCol);
-        setMove(moveToChild(row, column, adjRow, adjCol));
+        this.move= moveToChild(row, column, adjRow, adjCol);
 
         switch (movement) {
             case "UP":
@@ -36,7 +36,7 @@ public class Node {
         }
     }
 
-    public String classifyMove(Integer parentRow, Integer parentCol, Integer childRow, Integer childCol){
+    private String classifyMove(Integer parentRow, Integer parentCol, Integer childRow, Integer childCol){
         if (parentRow+1==childRow){
             return "DOWN";
         }
@@ -54,7 +54,7 @@ public class Node {
         }
     }
     
-    public String moveToChild(Integer parentRow, Integer parentCol, Integer childRow, Integer childCol){
+    private String moveToChild(Integer parentRow, Integer parentCol, Integer childRow, Integer childCol){
         switch (parentDir) {
             case "east":
                 switch (movement) {
@@ -150,10 +150,6 @@ public class Node {
     
     public String getParentDirection(){
         return direction;
-    }
-
-    public void setMove(String move){
-        this.move= move;
     }
 
     public String getMove(){

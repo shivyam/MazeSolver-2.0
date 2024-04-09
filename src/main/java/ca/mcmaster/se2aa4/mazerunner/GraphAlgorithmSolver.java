@@ -8,9 +8,11 @@ import java.util.LinkedList;
 public class GraphAlgorithmSolver extends MazeExploration{
     Maze maze;
     List<List<Node>> nodes= new ArrayList<>();
+    Direction checkMovement;
 
     public GraphAlgorithmSolver(Maze maze){
         this.maze= maze;
+        this.checkMovement= new Direction(maze);
         //create all nodes
         for (int i = 0; i < maze.getHeight(); i++) {
             List<Node> node = new ArrayList<>();
@@ -23,7 +25,7 @@ public class GraphAlgorithmSolver extends MazeExploration{
     }
 
 
-    public void adjacencyList(){
+    private void adjacencyList(){
         for(int i=0;i<maze.getHeight();i++){
             for(int j=0;j<maze.getWidth();j++){
                 setAdjacentNodesList(i, j);
@@ -31,18 +33,18 @@ public class GraphAlgorithmSolver extends MazeExploration{
         }
     }
 
-    public void setAdjacentNodesList(int currRow, int currColumn){
+    private void setAdjacentNodesList(int currRow, int currColumn){
         Node currNode= nodes.get(currRow).get(currColumn);
-        if (canCheckUp(currRow,currColumn)){
+        if (checkMovement.canCheckUp(currRow,currColumn)){
             currNode.addAdjacentNode(new Integer[] {currRow-1, currColumn});
         }
-        if (canCheckDown(currRow,currColumn)){
+        if (checkMovement.canCheckDown(currRow,currColumn)){
             currNode.addAdjacentNode(new Integer[] {currRow+1, currColumn});
         }
-        if (canCheckLeft(currRow,currColumn)){
+        if (checkMovement.canCheckLeft(currRow,currColumn)){
             currNode.addAdjacentNode(new Integer[] {currRow, currColumn-1});
         }
-        if (canCheckRight(currRow,currColumn)){
+        if (checkMovement.canCheckRight(currRow,currColumn)){
             currNode.addAdjacentNode(new Integer[] {currRow, currColumn+1});
         }
     }
@@ -81,7 +83,7 @@ public class GraphAlgorithmSolver extends MazeExploration{
     }
 
 
-    public String buildPath(){
+    private String buildPath(){
         StringBuilder path = new StringBuilder();
 
         Integer currRow= maze.findExitTile();
@@ -99,34 +101,6 @@ public class GraphAlgorithmSolver extends MazeExploration{
             move= currNode.getMove();
         }
         return path.toString();
-    }
-
-    public boolean canCheckUp(int currRow, int currColumn){
-        if (currRow-1>=0 && maze.getTile(currRow-1,currColumn)==1){
-            return true;
-        }
-        return false;
-    }
-    
-    public boolean canCheckDown(int currRow, int currColumn){
-        if (currRow+1<maze.getHeight() && maze.getTile(currRow+1,currColumn)==1){
-            return true;
-        }
-        return false;
-    }
-
-    public boolean canCheckLeft(int currRow, int currColumn){
-        if (currColumn-1>=0 && maze.getTile(currRow,currColumn-1)==1){
-            return true;
-        }
-        return false;
-    }
-    
-    public boolean canCheckRight(int currRow, int currColumn){
-        if (currColumn+1<maze.getWidth() && maze.getTile(currRow,currColumn+1)==1){
-            return true;
-        }
-        return false;
     }
 }
 
