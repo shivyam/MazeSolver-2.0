@@ -56,29 +56,29 @@ The delivered program at the end of this assignment should use the following fla
 When no logs are activated, the programs only print the computed path on the standard output.
 
 ```
-mosser@azrael A1-Template % java -jar target/mazerunner.jar -i ./examples/straight.maz.txt
+user@computer A1-Template % java -jar target/mazerunner.jar -i ./examples/straight.maz.txt
 FLFR2FL6FR4FR2FL2FR2FLF
-mosser@azrael A1-Template %
+user@computer A1-Template %
 ```
 ```
-mosser@azrael A1-Template % java -jar target/mazerunner.jar -method bfs -i ./examples/small.maz.txt
+user@computer A1-Template % java -jar target/mazerunner.jar -method bfs -i ./examples/small.maz.txt
 4F
-mosser@azrael A1-Template %
+user@computer A1-Template %
 ```
 
 If a given path is correct, the program prints the message `correct path` on the standard output.
 
 ```
-mosser@azrael A1-Template % java -jar target/mazerunner.jar -i ./examples/straight.maz.txt -p 4F
+user@computer A1-Template % java -jar target/mazerunner.jar -i ./examples/straight.maz.txt -p 4F
 correct path
-mosser@azrael A1-Template %
+user@computer A1-Template %
 ```
 
 If a given path is incorrect, the program prints the message `incorrect path` on the standard output.
 
 ```
-mosser@azrael A1-Template % java -jar target/mazerunner.jar -i ./examples/straight.maz.txt -p 3F
+user@computer A1-Template % java -jar target/mazerunner.jar -i ./examples/straight.maz.txt -p 3F
 inccorrect path
-mosser@azrael A1-Template %
+user@computer A1-Template %
 ```
 
