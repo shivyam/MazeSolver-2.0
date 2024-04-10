@@ -2,7 +2,7 @@
 
 class Maze
 class Direction
-class breadthFirstSearch
+class BreadthFirstSearch
 class RightHandSolver
 class Path
 class PathValidator
@@ -14,19 +14,19 @@ interface MazeExploration {
 }
 
 Maze "1" -- "1..*" Direction
-Maze "1" -- "1" breadthFirstSearch
+Maze "1" -- "1" BreadthFirstSearch
 Maze "1" -- "1" RightHandSolver
 Maze "1" -- "1" PathValidator
 Maze "1" -- "1" Position
 Maze <-- PathValidator 
 Maze <-- Position 
 
-Direction "1" -- "1" breadthFirstSearch
+Direction "1" -- "1" BreadthFirstSearch
 Direction "1" -- "1" RightHandSolver
 Direction "1" -- "1" Position
 Direction <-- PathValidator 
 
-MazeExploration <|-- breadthFirstSearch
+MazeExploration <|-- BreadthFirstSearch
 MazeExploration <|-- RightHandSolver
 
 Path <-- PathValidator 
@@ -43,6 +43,6 @@ Main --> "1" MazeExploration
 
 Main --> "1" PathValidator
 Main --> "1" RightHandSolver
-Main --> "1" breadthFirstSearch 
+Main --> "1" BreadthFirstSearch 
 
 @enduml

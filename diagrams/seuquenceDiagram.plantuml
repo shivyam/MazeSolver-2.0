@@ -40,13 +40,13 @@ else Maze Solver
         RightHandSolver -> RightHandSolver: Solve the maze using right-hand rule
         RightHandSolver --> Main: Return solved path
         deactivate RightHandSolver
-    else breadthFirstSearch
-        Main -> breadthFirstSearch: Create breadthFirstSearch
-        activate breadthFirstSearch
-        breadthFirstSearch -> breadthFirstSearch: Initialize with Maze
-        breadthFirstSearch -> breadthFirstSearch: Solve the maze using bfs algorithm
-        breadthFirstSearch --> Main: Return solved path
-        deactivate breadthFirstSearch
+    else BreadthFirstSearch
+        Main -> BreadthFirstSearch: Create BreadthFirstSearch
+        activate BreadthFirstSearch
+        BreadthFirstSearch -> BreadthFirstSearch: Initialize with Maze
+        BreadthFirstSearch -> BreadthFirstSearch: Solve the maze using bfs algorithm
+        BreadthFirstSearch --> Main: Return solved path
+        deactivate BreadthFirstSearch
     end
 end
 

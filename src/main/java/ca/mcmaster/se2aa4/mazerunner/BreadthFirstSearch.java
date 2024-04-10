@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Queue;
 import java.util.LinkedList;
 
-public class breadthFirstSearch implements MazeExploration{
+public class BreadthFirstSearch implements MazeExploration{
     Maze maze;
     List<List<Node>> nodes= new ArrayList<>();
     Direction findMovement;
 
 
-    public breadthFirstSearch(Maze maze){
+    public BreadthFirstSearch(Maze maze){
         this.maze= maze;
         this.findMovement= new Direction(maze);
 

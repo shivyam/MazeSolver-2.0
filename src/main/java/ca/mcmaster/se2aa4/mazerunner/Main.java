@@ -99,7 +99,7 @@ public class Main {
             case "bfs" -> {
                 logger.debug("BFS graph algorithm chosen.");
                 long bfsStartTime = System.currentTimeMillis();
-                breadthFirstSearch path= new breadthFirstSearch(maze);
+                BreadthFirstSearch path= new BreadthFirstSearch(maze);
                 Path finalPath= path.solve();
                 long bfsEndTime = System.currentTimeMillis();
 

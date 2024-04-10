@@ -16,11 +16,18 @@ public class ProgramTest {
         this.testPosition = new Position(testMaze);
     }
 
-    //Maze Exploration interface test
+    
+    //tests MazeExploration interface
     public void testGetFactorizedPath(){
-        breadthFirstSearch test= new breadthFirstSearch(testMaze);
+        BreadthFirstSearch test= new BreadthFirstSearch(testMaze);
         Path finalPath= test.solve();
         assertEquals("F L F R 2F L 6F R 4F R 2F L 2F R 2F L F", finalPath.getFactorizedPath());
+    }
+
+    //Path class tests
+    public void expandPath(){
+        Path path= new Path("4F2L3R");
+        assertEquals("FFFFLLRR", path.expandPath());
     }
 
     //Direction class tests
