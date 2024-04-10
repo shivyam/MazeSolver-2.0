@@ -1,0 +1,48 @@
+@startuml
+
+class Maze
+class Direction
+class breadthFirstSearch
+class RightHandSolver
+class Path
+class PathValidator
+class Position
+class Main
+
+interface MazeExploration {
+    Path solve()
+}
+
+Maze "1" -- "1..*" Direction
+Maze "1" -- "1" breadthFirstSearch
+Maze "1" -- "1" RightHandSolver
+Maze "1" -- "1" PathValidator
+Maze "1" -- "1" Position
+Maze <-- PathValidator 
+Maze <-- Position 
+
+Direction "1" -- "1" breadthFirstSearch
+Direction "1" -- "1" RightHandSolver
+Direction "1" -- "1" Position
+Direction <-- PathValidator 
+
+MazeExploration <|-- breadthFirstSearch
+MazeExploration <|-- RightHandSolver
+
+Path <-- PathValidator 
+Path <-- RightHandSolver
+
+PathValidator "1" -- "1" Direction
+PathValidator "1" -- "1" Path
+
+Position "1" -- "1" Direction
+
+Main "1" -- "1" Maze
+
+Main --> "1" MazeExploration
+
+Main --> "1" PathValidator
+Main --> "1" RightHandSolver
+Main --> "1" breadthFirstSearch 
+
+@enduml

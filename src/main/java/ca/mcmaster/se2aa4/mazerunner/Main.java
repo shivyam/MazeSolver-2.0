@@ -29,14 +29,7 @@ public class Main {
             
             fileLoadTime= fileEndTime- fileStartTime;
 
-
-            if (cmd.getOptionValue("p") != null) {
-                logger.info("Validating path");
-                String userPath = cmd.getOptionValue("p");
-                PathValidator check= new PathValidator(mazeTest, userPath);
-                logger.info(check.checkPath());
-            } 
-            else if(cmd.getOptionValue("baseline") != null){
+            if(cmd.getOptionValue("baseline") != null){
 
                 System.out.printf("Time spent loading the maze from the file: %.2f milliseconds", (double)fileLoadTime);
                 System.out.println();
@@ -58,6 +51,14 @@ public class Main {
                 System.out.println();
 
             }
+
+            else if (cmd.getOptionValue("p") != null) {
+                logger.info("Validating path");
+                String userPath = cmd.getOptionValue("p");
+                PathValidator check= new PathValidator(mazeTest, userPath);
+                logger.info(check.checkPath());
+            } 
+
             else {
                 logger.info("Computing path");
                 String method = cmd.getOptionValue("method", "righthand");
@@ -81,8 +82,8 @@ public class Main {
                 logger.debug("RightHand algorithm chosen.");
                 long righthandStartTime = System.currentTimeMillis();
                 RightHandSolver path= new RightHandSolver(maze);
-                long righthandEndTime = System.currentTimeMillis(); 
                 Path finalPath= path.solve();
+                long righthandEndTime = System.currentTimeMillis(); 
 
                 if(isRegMethod){
                     regMethodRunTime= righthandEndTime- righthandStartTime;
@@ -98,9 +99,9 @@ public class Main {
             case "bfs" -> {
                 logger.debug("BFS graph algorithm chosen.");
                 long bfsStartTime = System.currentTimeMillis();
-                GraphAlgorithmSolver path= new GraphAlgorithmSolver(maze);
-                long bfsEndTime = System.currentTimeMillis();
+                breadthFirstSearch path= new breadthFirstSearch(maze);
                 Path finalPath= path.solve();
+                long bfsEndTime = System.currentTimeMillis();
 
                 if(isRegMethod){
                     regMethodRunTime= bfsEndTime- bfsStartTime;
