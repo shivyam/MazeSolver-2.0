@@ -31,7 +31,7 @@ public class Main {
 
             if(cmd.getOptionValue("baseline") != null){
 
-                System.out.printf("Time spent loading the maze from the file: %.2f milliseconds", (double)fileLoadTime);
+                System.out.printf("Time spent loading the maze from the file: %.2g milliseconds", (double)fileLoadTime);
                 System.out.println();
 
                 String baselineMethod = cmd.getOptionValue("baseline");
@@ -40,14 +40,14 @@ public class Main {
                 solveMaze(regMethod,mazeTest, true, false);
                 solveMaze(baselineMethod,mazeTest, false, true);
 
-                System.out.printf("Time spent exploring the maze using the provide -method: %.2f milliseconds", (double)regMethodRunTime);
+                System.out.printf("Time spent exploring the maze using the provide -method: %.2g milliseconds", (double)regMethodRunTime);
                 System.out.println();
 
-                System.out.printf("Time spent exploring the maze using the provide -baseline: %.2f milliseconds", (double)baselineRunTime);
+                System.out.printf("Time spent exploring the maze using the provide -baseline: %.2g milliseconds", (double)baselineRunTime);
                 System.out.println();
 
                 double speedup= expandedBaselinePath.length() / expandedRegPath.length();
-                System.out.printf("Improvement on the path as a speedup: %.2f", speedup);
+                System.out.printf("Improvement on the path as a speedup: %.2g", speedup);
                 System.out.println();
 
             }
