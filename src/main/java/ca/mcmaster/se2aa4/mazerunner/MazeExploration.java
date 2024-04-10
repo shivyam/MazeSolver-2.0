@@ -6,10 +6,10 @@ abstract class MazeExploration{
 
     //uses findCanonicalPath method to find maze path, then outputs path in the form "3F2R2F2LF"
     public String findFactorizedPath(){
-        
         String path = solve();
         String[] path_arr= path.split("");
-        String strFactorizedPath="";
+        StringBuilder factorizedPath= new StringBuilder();
+
         if(path_arr.length==0){
             return "";
         }
@@ -24,28 +24,29 @@ abstract class MazeExploration{
             }
             else{
                 if(repetition>1){
-                    strFactorizedPath+= String.valueOf(repetition) + track;
+                    factorizedPath.append(String.valueOf(repetition));
+                    factorizedPath.append(track);
                 }
                 else{
-                    strFactorizedPath+= track;
+                    factorizedPath.append(track);
                 }
                 //resets move count
                 track= path_arr[i];
                 repetition=1;
+                factorizedPath.append(" ");
+
             }   
         }
 
         //if move is only repeated once, only the move is printed. repetition variable is ignored as "1F" is less factorized than "F"
         if(repetition>1){
-            strFactorizedPath+= repetition + path_arr[path_arr.length - 1];
+            factorizedPath.append(repetition);
+            factorizedPath.append(path_arr[path_arr.length - 1]);
         }
         else{
-            strFactorizedPath+= path_arr[path_arr.length - 1];
+            factorizedPath.append(path_arr[path_arr.length - 1]);
         }
         
-        return strFactorizedPath;
+        return factorizedPath.toString();
     }
-
-
-    
 }
