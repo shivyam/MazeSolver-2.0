@@ -7,11 +7,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ProgramTest {
 
-    Maze testMaze;
+    private Maze testMaze;
+    private Position testPosition;
     
     @BeforeEach
     public void testMaze() throws Exception{
         this.testMaze= new Maze("./examples/small.maz.txt");
+        this.testPosition = new Position(testMaze);
+    }
+
+    //Maze Exploration interface test
+    public void testFindFactorizedPath(){
+        GraphAlgorithmSolver test= new GraphAlgorithmSolver(testMaze);
+        assertEquals("F L F R 2F L 6F R 4F R 2F L 2F R 2F L F",test.findFactorizedPath());
     }
 
     //Direction class tests
@@ -107,4 +115,68 @@ public class ProgramTest {
     public void testFindExitTile() {
         assertEquals(5, testMaze.findExitTile()); 
     }
+
+
+    //Position class tests
+
+    @Test
+    public void testCanTurnRight() {
+        assertEquals(false,testPosition.canTurnRight()); 
+    }
+
+    @Test
+    public void testCanTurnLeft() {
+        assertEquals(false, testPosition.canTurnLeft()); 
+    }
+    
+    @Test
+    public void testCanMoveForward() {
+        assertEquals(true, testPosition.canMoveForward()); 
+    }
+
+    @Test
+    public void testTurnRight() {
+        String initialDirection = testPosition.dir.getDirection();
+        testPosition.turnRight();
+        assertNotEquals(initialDirection, testPosition.dir.getDirection()); 
+    }
+
+    @Test
+    public void testTurnLeft() {
+        String initialDirection = testPosition.dir.getDirection();
+        testPosition.turnLeft();
+        assertNotEquals(initialDirection, testPosition.dir.getDirection()); 
+    }
+
+    @Test
+    public void testMoveForward() {
+        int initialRow = testPosition.getCurrRow();
+        int initialColumn = testPosition.getCurrColumn();
+        testPosition.moveForward();
+        assertEquals(initialRow, testPosition.getCurrRow()); 
+        assertNotEquals(initialColumn, testPosition.getCurrColumn()); 
+    }
+
+
+    //Path Validator class tests
+    @Test
+    public void testPathValidator(){
+        PathValidator check= new PathValidator(testMaze,"F L F R 2F L 6F R 4F R 2F L 2F R 2F L F");
+        assertEquals("correct path", check.checkPath());
+    }
+
+    //Node class tests
+
+    @Test
+    public void testGetDirection(){
+        Node node= new Node();
+        assertEquals("east", node.getDirection());
+    }
+
+    public void testSetDirection(){
+        Node node= new Node();
+        node.setDirection("south");
+        assertEquals("south", node.getDirection());
+    }
+
 }
