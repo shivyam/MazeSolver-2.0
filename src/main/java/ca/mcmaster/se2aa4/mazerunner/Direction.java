@@ -60,6 +60,7 @@ public class Direction{
         return -1;
     }
 
+    //checks if there is an open tile above current tile
     public boolean canCheckUp(int currRow, int currColumn){
         if (currRow-1>=0 && maze.getTile(currRow-1,currColumn)==1){
             return true;
@@ -67,6 +68,7 @@ public class Direction{
         return false;
     }
     
+    //checks if there is an open tile below current tile
     public boolean canCheckDown(int currRow, int currColumn){
         if (currRow+1<maze.getHeight() && maze.getTile(currRow+1,currColumn)==1){
             return true;
@@ -74,13 +76,15 @@ public class Direction{
         return false;
     }
 
+    //checks if there is an open tile to the left of the current tile
     public boolean canCheckLeft(int currRow, int currColumn){
         if (currColumn-1>=0 && maze.getTile(currRow,currColumn-1)==1){
             return true;
         }
         return false;
     }
-    
+
+    //checks if there is an open tile to the right of the current tile
     public boolean canCheckRight(int currRow, int currColumn){
         if (currColumn+1<maze.getWidth() && maze.getTile(currRow,currColumn+1)==1){
             return true;

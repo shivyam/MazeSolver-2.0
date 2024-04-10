@@ -5,7 +5,7 @@ abstract class MazeExploration{
     abstract String solve();
 
     //uses findCanonicalPath method to find maze path, then outputs path in the form "3F2R2F2LF"
-    String findFactorizedPath(){
+    public String findFactorizedPath(){
         
         String path = solve();
         String[] path_arr= path.split("");

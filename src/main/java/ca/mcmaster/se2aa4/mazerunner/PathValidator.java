@@ -16,7 +16,7 @@ public class PathValidator{
     }
 
     //Converts and returns user input path in canonical form, and strips all whitespace fro inputted path
-    public List<String> convertUserPath(String userPath){
+    private List<String> convertUserPath(String userPath){
         //strips whitespace from user input path
         String path = userPath.replaceAll("\\s", "");
         String[] path_arr= path.split("");
@@ -59,14 +59,14 @@ public class PathValidator{
     }
 
 
-    public boolean checkLeftToRight(){
+    private boolean checkLeftToRight(){
         int currColumn=0;
         int currRow= dummyMaze.findEntryTile();
         int endRow = dummyMaze.findExitTile();
         return traverseMaze(currColumn, currRow, endRow);
     }
 
-    public boolean checkRightToLeft(){
+    private boolean checkRightToLeft(){
         int currColumn= dummyMaze.getWidth();
         int currRow= dummyMaze.findExitTile();
         int endRow = dummyMaze.findEntryTile();
@@ -75,7 +75,7 @@ public class PathValidator{
 
     }
 
-    public boolean traverseMaze(int currColumn, int currRow, int endRow){
+    private boolean traverseMaze(int currColumn, int currRow, int endRow){
         List<String> path= convertUserPath(userPath);
         int width= dummyMaze.getWidth();
         int height = dummyMaze.getHeight();
@@ -128,7 +128,7 @@ public class PathValidator{
 
 
     //turns user right by changing the direction they are facing based on their current direction
-    public void turnRight() {
+    private void turnRight() {
         String direction = dir.getDirection();
         switch (direction) {
             case "east":
@@ -148,7 +148,7 @@ public class PathValidator{
     
 
     //turns user left by changing the direction they are facing based on their current direction
-    public void turnLeft() {
+    private void turnLeft() {
         String direction = dir.getDirection();
         switch (direction) {
             case "east":
