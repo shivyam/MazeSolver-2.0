@@ -6,9 +6,9 @@ import java.util.Queue;
 import java.util.LinkedList;
 
 public class BreadthFirstSearch implements MazeExploration{
-    Maze maze;
-    List<List<Node>> nodes= new ArrayList<>();
-    Direction findMovement;
+    private Maze maze;
+    private List<List<Node>> nodes= new ArrayList<>();
+    private Direction findMovement;
 
 
     public BreadthFirstSearch(Maze maze){

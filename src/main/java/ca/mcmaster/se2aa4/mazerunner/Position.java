@@ -2,10 +2,10 @@ package ca.mcmaster.se2aa4.mazerunner;
 
 public class Position{
 
-    public static Maze dummyMaze;
-    public static int currRow;
-    public static int currColumn;
-    public static Direction dir;
+    private static Maze dummyMaze;
+    private static int currRow;
+    private static int currColumn;
+    private static Direction dir;
 
     public Position(Maze maze){
         Position.dummyMaze= maze;
@@ -22,6 +22,9 @@ public class Position{
         return currColumn;
     }
 
+    public static Direction getDirectionObj(){
+        return dir;
+    }
 
     //checks if the tile to the right of current position is not a wall
     public boolean canTurnRight() {

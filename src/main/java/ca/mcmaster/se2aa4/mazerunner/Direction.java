@@ -2,11 +2,10 @@ package ca.mcmaster.se2aa4.mazerunner;
 
 public class Direction{
 
-    public Maze maze;
-    public int height;
-    public int width;
-
-    public String direction="east";
+    private Maze maze;
+    private int height;
+    private int width;
+    private String direction="east";
 
     public Direction(Maze maze){
         this.maze= maze;

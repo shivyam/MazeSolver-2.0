@@ -2,9 +2,9 @@ package ca.mcmaster.se2aa4.mazerunner;
 
 public class PathValidator{
 
-    public Maze dummyMaze;
-    public String userPath;
-    Direction dir;
+    private Maze dummyMaze;
+    private String userPath;
+    private Direction dir;
 
     public PathValidator(Maze maze, String userPath){
         this.dummyMaze= maze;
