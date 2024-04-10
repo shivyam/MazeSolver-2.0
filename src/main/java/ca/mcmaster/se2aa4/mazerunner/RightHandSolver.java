@@ -1,6 +1,6 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
-public class RightHandSolver extends MazeExploration{
+public class RightHandSolver implements MazeExploration{
 
     private Maze dummyMaze;
 
@@ -10,8 +10,8 @@ public class RightHandSolver extends MazeExploration{
     }
 
 
-    //finds path in the form "FFFRRFFLLF"
-    public String solve(){
+    //finds path in the form "FFFRRFFLLF", stores it in path object
+    public Path solve(){
         int endRow= dummyMaze.findExitTile();
         String path="";
         Position pos= new Position(dummyMaze);
@@ -46,6 +46,7 @@ public class RightHandSolver extends MazeExploration{
                 path+="F";
             }
         }
-        return path;
+        Path finalPath= new Path(path);
+        return finalPath;
     }
 }

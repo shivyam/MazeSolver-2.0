@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.LinkedList;
 
-public class GraphAlgorithmSolver extends MazeExploration{
+public class GraphAlgorithmSolver implements MazeExploration{
     Maze maze;
     List<List<Node>> nodes= new ArrayList<>();
     Direction findMovement;
@@ -27,7 +27,7 @@ public class GraphAlgorithmSolver extends MazeExploration{
     }
 
 
-    public String solve(){
+    public Path solve(){
         Queue<Integer[]> queue = new LinkedList<>();
         //adds starting node to queue
         queue.add(new Integer[] {maze.findEntryTile(),0});
@@ -61,7 +61,9 @@ public class GraphAlgorithmSolver extends MazeExploration{
                 }
             }    
         }
-        return buildPath();
+        String path= buildPath();
+        Path finalPath= new Path(path);
+        return finalPath;
     }
 
     //creates adjacency list for graph representation

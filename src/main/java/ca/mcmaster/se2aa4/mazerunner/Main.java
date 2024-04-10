@@ -11,6 +11,8 @@ public class Main {
     private static long fileLoadTime;
     private static long regMethodRunTime;
     private static long baselineRunTime;
+    private static String expandedRegPath;
+    private static String expandedBaselinePath;
 
 
 
@@ -42,8 +44,8 @@ public class Main {
                 String baselineMethod = cmd.getOptionValue("baseline");
                 String regMethod = cmd.getOptionValue("method");
 
-                String regular= solveMaze(regMethod,mazeTest, true, false);
-                String baseline= solveMaze(baselineMethod,mazeTest, false, true);
+                solveMaze(regMethod,mazeTest, true, false);
+                solveMaze(baselineMethod,mazeTest, false, true);
 
                 System.out.printf("Time spent exploring the maze using the provide -method: %.2f milliseconds", (double)regMethodRunTime);
                 System.out.println();
@@ -51,8 +53,13 @@ public class Main {
                 System.out.printf("Time spent exploring the maze using the provide -baseline: %.2f milliseconds", (double)baselineRunTime);
                 System.out.println();
 
+                double speedup= expandedBaselinePath.length() / expandedRegPath.length();
+                System.out.printf("Improvement on the path as a speedup: %.2f", speedup);
+                System.out.println();
+
             }
             else {
+                logger.info("Computing path");
                 String method = cmd.getOptionValue("method", "righthand");
                 String path= solveMaze(method, mazeTest,false,false);
                 System.out.println(path);
@@ -69,37 +76,42 @@ public class Main {
 
 
     private static String solveMaze(String method, Maze maze, boolean isRegMethod, boolean isBaselineMethod) throws Exception {
-        logger.info("Computing path");
         switch (method) {
             case "righthand" -> {
                 logger.debug("RightHand algorithm chosen.");
                 long righthandStartTime = System.currentTimeMillis();
                 RightHandSolver path= new RightHandSolver(maze);
                 long righthandEndTime = System.currentTimeMillis(); 
+                Path finalPath= path.solve();
 
                 if(isRegMethod){
                     regMethodRunTime= righthandEndTime- righthandStartTime;
+                    expandedRegPath= finalPath.expandPath();
                 }
                 else if (isBaselineMethod){
                     baselineRunTime= righthandEndTime- righthandStartTime;
+                    expandedBaselinePath= finalPath.expandPath();
                 }
 
-                return path.findFactorizedPath();
+                return finalPath.getFactorizedPath();
             }
             case "bfs" -> {
                 logger.debug("BFS graph algorithm chosen.");
                 long bfsStartTime = System.currentTimeMillis();
                 GraphAlgorithmSolver path= new GraphAlgorithmSolver(maze);
                 long bfsEndTime = System.currentTimeMillis();
-                
+                Path finalPath= path.solve();
+
                 if(isRegMethod){
                     regMethodRunTime= bfsEndTime- bfsStartTime;
+                    expandedRegPath= finalPath.expandPath();
                 }
                 else if (isBaselineMethod){
                     baselineRunTime= bfsEndTime- bfsStartTime;
+                    expandedBaselinePath= finalPath.expandPath();
                 }
 
-                return path.findFactorizedPath();
+                return finalPath.getFactorizedPath();
             }
             default -> {
                 throw new Exception("Maze solving method '" + method + "' not supported.");

@@ -17,9 +17,10 @@ public class ProgramTest {
     }
 
     //Maze Exploration interface test
-    public void testFindFactorizedPath(){
+    public void testGetFactorizedPath(){
         GraphAlgorithmSolver test= new GraphAlgorithmSolver(testMaze);
-        assertEquals("F L F R 2F L 6F R 4F R 2F L 2F R 2F L F", test.findFactorizedPath());
+        Path finalPath= test.solve();
+        assertEquals("F L F R 2F L 6F R 4F R 2F L 2F R 2F L F", finalPath.getFactorizedPath());
     }
 
     //Direction class tests

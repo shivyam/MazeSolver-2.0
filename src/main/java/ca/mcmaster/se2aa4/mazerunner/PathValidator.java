@@ -16,29 +16,9 @@ public class PathValidator{
     }
 
     //Converts and returns user input path in canonical form, and strips all whitespace fro inputted path
-    private List<String> convertUserPath(String userPath){
-        //strips whitespace from user input path
-        String path = userPath.replaceAll("\\s", "");
-        String[] path_arr= path.split("");
-        List<String> expanded = new ArrayList<String>();
-
-        for (int i = 0; i < path_arr.length; i++) {
-            if (!Character.isDigit(path_arr[i].charAt(0))) {
-                expanded.add(path_arr[i]);
-            } else {
-                int count = 0;
-                int digit = 0;
-                do {
-                    count *= (int) Math.pow(10, digit++);
-                    count += Character.getNumericValue(path.charAt(i++));
-                } while (Character.isDigit(path_arr[i].charAt(0)));
-
-                for(int j=0;j<count;j++){
-                    expanded.add(path_arr[i]);
-                }
-            }
-        }
-        return expanded;
+    private String convertUserPath(String userPath){
+        Path temp= new Path(userPath);
+        return temp.expandPath();
     }
 
     //outputs string message verifying if user input path is correct or not 
@@ -76,11 +56,14 @@ public class PathValidator{
     }
 
     private boolean traverseMaze(int currColumn, int currRow, int endRow){
-        List<String> path= convertUserPath(userPath);
+        String tempUserPath= convertUserPath(userPath);
+        String path = tempUserPath.replaceAll("\\s", "");
+        String[] path_arr= path.split("");
+
         int width= dummyMaze.getWidth();
         int height = dummyMaze.getHeight();
         int index=0;
-        while(currColumn<=(width-1) && currColumn>=0 && currRow>=0 && currRow<=(height-1) && index<path.size()){
+        while(currColumn<=(width-1) && currColumn>=0 && currRow>=0 && currRow<=(height-1) && index<path_arr.length){
 
                 //if current tile is a wall, this automatically means that the path is incorrect
                 //terminates path check immediately
@@ -88,7 +71,7 @@ public class PathValidator{
                     return false;
                 }
 
-                if(path.get(index).equals("F")){
+                if(path_arr[index].equals("F")){
                     //moves user forward based on the direction they are currently facing
                     //adjusts current position in the maze accordingly
                     if(dir.getDirection().equals("east")){
@@ -106,19 +89,19 @@ public class PathValidator{
                 }
                 
                 //turns user left
-                else if((path.get(index).equals("L"))){
+                else if((path_arr[index].equals("L"))){
                     turnLeft();
                 }
 
                 //turns user right
-                else if((path.get(index).equals("R"))){
+                else if((path_arr[index].equals("R"))){
                     turnRight();
                 }
             index+=1;
         }
         
         //checks if final position is the maze's exit tile
-        if(currRow==(endRow) && currColumn==(width-1) && index==path.size()){
+        if(currRow==(endRow) && currColumn==(width-1) && index==path_arr.length){
                 return true;
         }
         else{
