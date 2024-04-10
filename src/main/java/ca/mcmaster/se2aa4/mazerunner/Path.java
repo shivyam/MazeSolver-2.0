@@ -8,9 +8,10 @@ public class Path {
     }
     
 
-    
+    //returns path in canonical form
+    //e.g. "2F2R" --> "FFRR"
     public String expandPath(){
-        //strips whitespace from user input path
+        //strips whitespace from input path
         String path = inputPath.replaceAll("\\s", "");
         String[] path_arr= path.split("");
         List<String> expanded = new ArrayList<String>();
@@ -37,7 +38,8 @@ public class Path {
 
 
     
-    //uses findCanonicalPath method to find maze path, then outputs path in the form "3F2R2F2LF"
+    //outputs path in the factorized form "3F2R2F2LF"
+    //"RRFF" --> "2R2F"
     public String getFactorizedPath( ){
         String path = inputPath;
         String[] path_arr= path.split("");
