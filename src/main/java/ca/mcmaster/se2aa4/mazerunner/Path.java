@@ -14,11 +14,11 @@ public class Path {
         //strips whitespace from input path
         String path = inputPath.replaceAll("\\s", "");
         String[] path_arr= path.split("");
-        List<String> expanded = new ArrayList<String>();
+        StringBuilder expanded = new StringBuilder();
 
         for (int i = 0; i < path_arr.length; i++) {
             if (!Character.isDigit(path_arr[i].charAt(0))) {
-                expanded.add(path_arr[i]);
+                expanded.append(path_arr[i]);
             } else {
                 int count = 0;
                 int digit = 0;
@@ -28,7 +28,7 @@ public class Path {
                 } while (Character.isDigit(path_arr[i].charAt(0)));
 
                 for(int j=0;j<count;j++){
-                    expanded.add(path_arr[i]);
+                    expanded.append(path_arr[i]);
                 }
             }
         }
@@ -81,8 +81,8 @@ public class Path {
         else{
             factorizedPath.append(path_arr[path_arr.length - 1]);
         }
-        
-        return factorizedPath.toString();
+        String finalPath= factorizedPath.toString();
+        return finalPath;
     }
 
 }
