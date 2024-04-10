@@ -26,8 +26,8 @@ public class ProgramTest {
 
     //Path class tests
     public void expandPath(){
-        Path path= new Path("4F2L3R");
-        assertEquals("FFFFLLRR", path.expandPath());
+        Path path= new Path("11F2L3R");
+        assertEquals("FFFFFFFFFFFLLRR", path.expandPath());
     }
 
     //Direction class tests
