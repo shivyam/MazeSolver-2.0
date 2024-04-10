@@ -8,12 +8,14 @@ import java.util.LinkedList;
 public class GraphAlgorithmSolver extends MazeExploration{
     Maze maze;
     List<List<Node>> nodes= new ArrayList<>();
-    Direction checkMovement;
+    Direction findMovement;
+
 
     public GraphAlgorithmSolver(Maze maze){
         this.maze= maze;
-        this.checkMovement= new Direction(maze);
-        //create all nodes
+        this.findMovement= new Direction(maze);
+
+        //initializes all nodes and stores them in a 2D arraylist
         for (int i = 0; i < maze.getHeight(); i++) {
             List<Node> node = new ArrayList<>();
             for (int j = 0; j < maze.getWidth(); j++) {
@@ -24,7 +26,7 @@ public class GraphAlgorithmSolver extends MazeExploration{
         adjacencyList();
     }
 
-
+    //creates adjacency list for graph representation
     private void adjacencyList(){
         for(int i=0;i<maze.getHeight();i++){
             for(int j=0;j<maze.getWidth();j++){
@@ -33,70 +35,81 @@ public class GraphAlgorithmSolver extends MazeExploration{
         }
     }
 
+    //helper method for creating adjacency list
+    //adds all adjacent nodes to the specified nodes adjacent node list
     private void setAdjacentNodesList(int currRow, int currColumn){
         Node currNode= nodes.get(currRow).get(currColumn);
-        if (checkMovement.canCheckUp(currRow,currColumn)){
+        if (findMovement.canCheckUp(currRow,currColumn)){
             currNode.addAdjacentNode(new Integer[] {currRow-1, currColumn});
         }
-        if (checkMovement.canCheckDown(currRow,currColumn)){
+        if (findMovement.canCheckDown(currRow,currColumn)){
             currNode.addAdjacentNode(new Integer[] {currRow+1, currColumn});
         }
-        if (checkMovement.canCheckLeft(currRow,currColumn)){
+        if (findMovement.canCheckLeft(currRow,currColumn)){
             currNode.addAdjacentNode(new Integer[] {currRow, currColumn-1});
         }
-        if (checkMovement.canCheckRight(currRow,currColumn)){
+        if (findMovement.canCheckRight(currRow,currColumn)){
             currNode.addAdjacentNode(new Integer[] {currRow, currColumn+1});
         }
     }
 
     public String solve(){
         Queue<Integer[]> queue = new LinkedList<>();
+        //adds starting node to queue
         queue.add(new Integer[] {maze.findEntryTile(),0});
 
         while (!queue.isEmpty()){
-            //Update marked node list
+            
             Integer[] currNodeCoords= queue.remove();
             Integer currRow= currNodeCoords[0];
             Integer currColumn= currNodeCoords[1];
             Node currNode= nodes.get(currRow).get(currColumn);
 
+            //reached the exit node
             if(currRow== maze.findExitTile() && currColumn== maze.getWidth()- 1){
                 break;
             }
 
-            //set to true, meaning it has been visited
+            //set to true, meaning node has been visited
             currNode.setMarkedTrue();
 
-            //add adjacent nodes to queue
+            
             for(Integer[] adjacentNodeCoord: currNode.getAdjacentNodesList()){
                 Integer adjRow = adjacentNodeCoord[0];
                 Integer adjCol = adjacentNodeCoord[1];
                 Node adjacentNode= nodes.get(adjRow).get(adjCol);
                 if(!adjacentNode.getMarked()){
+                    //add adjacent nodes to queue
                     queue.add(adjacentNodeCoord);
+
+                    //sets current node attributes
                     adjacentNode.setParentDirection(currNode.getDirection());
-                    adjacentNode.setNodeVariables(currRow, currColumn, adjRow, adjCol);
+                    adjacentNode.setNodeAttributes(currRow, currColumn, adjRow, adjCol);
                 }
             }    
         }
         return buildPath();
     }
 
-
+    //backtracks from ending node to generate the maze path
     private String buildPath(){
         StringBuilder path = new StringBuilder();
 
         Integer currRow= maze.findExitTile();
         Integer currColumn= maze.getWidth()-1; 
         Node currNode= nodes.get(currRow).get(currColumn);
+
+        //the move the user needs to take to get from the parent node to its child node
         String move= currNode.getMove();
 
+        //loops until node does not have a parent (aka starting node)
         while(!move.equals("null")){
+
+            //adds moves to path
             path.insert(0,move);
 
-            Integer tempRow= Integer.parseInt(currNode.getParentRow());
+            currRow= Integer.parseInt(currNode.getParentRow());
             currColumn= Integer.parseInt(currNode.getParentColumn());
-            currRow= tempRow;
             currNode= nodes.get(currRow).get(currColumn);
             move= currNode.getMove();
         }

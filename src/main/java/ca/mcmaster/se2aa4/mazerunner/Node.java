@@ -14,14 +14,16 @@ public class Node {
     private List<Integer[]> adjacentNodes= new ArrayList<>();
 
 
-    public void setNodeVariables(Integer row, Integer column,Integer adjRow, Integer adjCol){
+    //updates Node attributes
+    public void setNodeAttributes(Integer row, Integer column,Integer adjRow, Integer adjCol){
         this.parentRow= String.valueOf(row);
         this.parentCol= String.valueOf(column);
-        this.movement= classifyMove(row, column, adjRow, adjCol);
+        this.movement= tileRelativeToParent(row, column, adjRow, adjCol);
         this.move= moveToChild(row, column, adjRow, adjCol);
         this.direction= findNewDirection();
     }
 
+    //finds the direction the user ends up facing based on where the child node is relative to its parent node
     private String findNewDirection(){
         switch (movement) {
             case "UP":
@@ -34,8 +36,9 @@ public class Node {
                 return "west";
         }
     }
-    
-    private String classifyMove(Integer parentRow, Integer parentCol, Integer childRow, Integer childCol){
+
+    //identifies where the child node is relative to its parent node
+    private String tileRelativeToParent(Integer parentRow, Integer parentCol, Integer childRow, Integer childCol){
         if (parentRow+1==childRow){
             return "DOWN";
         }
@@ -53,6 +56,8 @@ public class Node {
         }
     }
     
+    //finds the move required to go from the parent node to the child node
+    //considers direction player ends up facing on the parent node
     private String moveToChild(Integer parentRow, Integer parentCol, Integer childRow, Integer childCol){
         switch (parentDir) {
             case "east":
@@ -110,11 +115,12 @@ public class Node {
             return "";
     }
 
-
+    //updates current nodes adjacent nodes
     public void addAdjacentNode(Integer[] coords){
         adjacentNodes.add(coords);
     }
 
+    //getter and setter methods
     public List<Integer[]> getAdjacentNodesList(){
         return adjacentNodes;
     }
