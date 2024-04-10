@@ -26,6 +26,44 @@ public class GraphAlgorithmSolver extends MazeExploration{
         adjacencyList();
     }
 
+
+    public String solve(){
+        Queue<Integer[]> queue = new LinkedList<>();
+        //adds starting node to queue
+        queue.add(new Integer[] {maze.findEntryTile(),0});
+
+        while (!queue.isEmpty()){
+            
+            Integer[] currNodeCoords= queue.remove();
+            Integer currRow= currNodeCoords[0];
+            Integer currColumn= currNodeCoords[1];
+            Node currNode= nodes.get(currRow).get(currColumn);
+
+            //reached the exit node
+            if(currRow== maze.findExitTile() && currColumn== maze.getWidth()- 1){
+                break;
+            }
+
+            //set to true, meaning node has been visited
+            currNode.setMarkedTrue();
+
+            for(Integer[] adjacentNodeCoord: currNode.getAdjacentNodesList()){
+                Integer adjRow = adjacentNodeCoord[0];
+                Integer adjCol = adjacentNodeCoord[1];
+                Node adjacentNode= nodes.get(adjRow).get(adjCol);
+                if(!adjacentNode.getMarked()){
+                    //add adjacent nodes to queue
+                    queue.add(adjacentNodeCoord);
+
+                    //sets current node attributes
+                    adjacentNode.setParentDirection(currNode.getDirection());
+                    adjacentNode.setNodeAttributes(currRow, currColumn, adjRow, adjCol);
+                }
+            }    
+        }
+        return buildPath();
+    }
+
     //creates adjacency list for graph representation
     private void adjacencyList(){
         for(int i=0;i<maze.getHeight();i++){
@@ -51,44 +89,6 @@ public class GraphAlgorithmSolver extends MazeExploration{
         if (findMovement.canCheckRight(currRow,currColumn)){
             currNode.addAdjacentNode(new Integer[] {currRow, currColumn+1});
         }
-    }
-
-    public String solve(){
-        Queue<Integer[]> queue = new LinkedList<>();
-        //adds starting node to queue
-        queue.add(new Integer[] {maze.findEntryTile(),0});
-
-        while (!queue.isEmpty()){
-            
-            Integer[] currNodeCoords= queue.remove();
-            Integer currRow= currNodeCoords[0];
-            Integer currColumn= currNodeCoords[1];
-            Node currNode= nodes.get(currRow).get(currColumn);
-
-            //reached the exit node
-            if(currRow== maze.findExitTile() && currColumn== maze.getWidth()- 1){
-                break;
-            }
-
-            //set to true, meaning node has been visited
-            currNode.setMarkedTrue();
-
-            
-            for(Integer[] adjacentNodeCoord: currNode.getAdjacentNodesList()){
-                Integer adjRow = adjacentNodeCoord[0];
-                Integer adjCol = adjacentNodeCoord[1];
-                Node adjacentNode= nodes.get(adjRow).get(adjCol);
-                if(!adjacentNode.getMarked()){
-                    //add adjacent nodes to queue
-                    queue.add(adjacentNodeCoord);
-
-                    //sets current node attributes
-                    adjacentNode.setParentDirection(currNode.getDirection());
-                    adjacentNode.setNodeAttributes(currRow, currColumn, adjRow, adjCol);
-                }
-            }    
-        }
-        return buildPath();
     }
 
     //backtracks from ending node to generate the maze path
