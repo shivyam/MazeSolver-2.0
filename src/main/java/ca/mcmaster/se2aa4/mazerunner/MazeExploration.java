@@ -1,5 +1,5 @@
 package ca.mcmaster.se2aa4.mazerunner;
-
+import java.util.*;
 abstract class MazeExploration{
 
     abstract String solve();
@@ -48,5 +48,31 @@ abstract class MazeExploration{
         }
         
         return factorizedPath.toString();
+    }
+
+
+    public List<String> expandPath(String factorizedPath){
+        //strips whitespace from user input path
+        String path = factorizedPath.replaceAll("\\s", "");
+        String[] path_arr= path.split("");
+        List<String> expanded = new ArrayList<String>();
+
+        for (int i = 0; i < path_arr.length; i++) {
+            if (!Character.isDigit(path_arr[i].charAt(0))) {
+                expanded.add(path_arr[i]);
+            } else {
+                int count = 0;
+                int digit = 0;
+                do {
+                    count *= (int) Math.pow(10, digit++);
+                    count += Character.getNumericValue(path.charAt(i++));
+                } while (Character.isDigit(path_arr[i].charAt(0)));
+
+                for(int j=0;j<count;j++){
+                    expanded.add(path_arr[i]);
+                }
+            }
+        }
+        return expanded;
     }
 }

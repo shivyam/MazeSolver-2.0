@@ -7,7 +7,12 @@ import org.apache.commons.cli.*;
 public class Main {
 
     private static final Logger logger = LogManager.getLogger();
-    
+    private static String method= "";
+    private static long fileLoadTime;
+    private static long regMethodRunTime;
+    private static long baselineRunTime;
+
+
 
     public static void main(String[] args) {
         logger.info("** Starting Maze Runner");
@@ -17,17 +22,39 @@ public class Main {
         try{
             cmd = parser.parse(getParserOptions(), args);
             String inputFilePath = cmd.getOptionValue('i');
+            long fileStartTime= System.currentTimeMillis();
             Maze mazeTest= new Maze(inputFilePath);
+            long fileEndTime = System.currentTimeMillis();
+            
+            fileLoadTime= fileEndTime- fileStartTime;
+
 
             if (cmd.getOptionValue("p") != null) {
                 logger.info("Validating path");
                 String userPath = cmd.getOptionValue("p");
                 PathValidator check= new PathValidator(mazeTest, userPath);
                 logger.info(check.checkPath());
-                
-            } else {
+            } 
+            else if(cmd.getOptionValue("baseline") != null){
+                System.out.printf("Time spent loading the maze from the file: %.2f milliseconds", (double)fileLoadTime);
+                System.out.println();
+
+                String baselineMethod = cmd.getOptionValue("baseline");
+                String regMethod = cmd.getOptionValue("method");
+
+                String regular= solveMaze(regMethod,mazeTest, true, false);
+                String baseline= solveMaze(baselineMethod,mazeTest, false, true);
+
+                System.out.printf("Time spent exploring the maze using the provide -method: %.2f milliseconds", (double)regMethodRunTime);
+                System.out.println();
+
+                System.out.printf("Time spent exploring the maze using the provide -baseline: %.2f milliseconds", (double)baselineRunTime);
+                System.out.println();
+
+            }
+            else {
                 String method = cmd.getOptionValue("method", "righthand");
-                String path= solveMaze(method, mazeTest);
+                String path= solveMaze(method, mazeTest,false,false);
                 System.out.println(path);
             }
         } catch (Exception e) {
@@ -41,17 +68,37 @@ public class Main {
     }
 
 
-    private static String solveMaze(String method, Maze maze) throws Exception {
+    private static String solveMaze(String method, Maze maze, boolean isRegMethod, boolean isBaselineMethod) throws Exception {
         logger.info("Computing path");
         switch (method) {
             case "righthand" -> {
                 logger.debug("RightHand algorithm chosen.");
+                long righthandStartTime = System.currentTimeMillis();
                 RightHandSolver path= new RightHandSolver(maze);
+                long righthandEndTime = System.currentTimeMillis(); 
+
+                if(isRegMethod){
+                    regMethodRunTime= righthandEndTime- righthandStartTime;
+                }
+                else if (isBaselineMethod){
+                    baselineRunTime= righthandEndTime- righthandStartTime;
+                }
+
                 return path.findFactorizedPath();
             }
             case "bfs" -> {
                 logger.debug("BFS graph algorithm chosen.");
+                long bfsStartTime = System.currentTimeMillis();
                 GraphAlgorithmSolver path= new GraphAlgorithmSolver(maze);
+                long bfsEndTime = System.currentTimeMillis();
+                
+                if(isRegMethod){
+                    regMethodRunTime= bfsEndTime- bfsStartTime;
+                }
+                else if (isBaselineMethod){
+                    baselineRunTime= bfsEndTime- bfsStartTime;
+                }
+
                 return path.findFactorizedPath();
             }
             default -> {
@@ -75,6 +122,7 @@ public class Main {
         options.addOption(new Option("p", true, "Path to be verified in maze"));
         options.addOption(new Option("method", true, "Specify which path computation algorithm will be used"));
 
+        options.addOption(new Option("baseline", true, "Method to be compared with baseline method"));
         return options;
     }
 }
