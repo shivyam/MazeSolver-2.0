@@ -137,16 +137,16 @@ public class ProgramTest {
 
     @Test
     public void testTurnRight() {
-        String initialDirection = testPosition.dir.getDirection();
+        String initialDirection = Position.dir.getDirection();
         testPosition.turnRight();
-        assertNotEquals(initialDirection, testPosition.dir.getDirection()); 
+        assertNotEquals(initialDirection, Position.dir.getDirection()); 
     }
 
     @Test
     public void testTurnLeft() {
-        String initialDirection = testPosition.dir.getDirection();
+        String initialDirection = Position.dir.getDirection();
         testPosition.turnLeft();
-        assertNotEquals(initialDirection, testPosition.dir.getDirection()); 
+        assertNotEquals(initialDirection, Position.dir.getDirection()); 
     }
 
     @Test

@@ -7,7 +7,6 @@ import org.apache.commons.cli.*;
 public class Main {
 
     private static final Logger logger = LogManager.getLogger();
-    private static String method= "";
     private static long fileLoadTime;
     private static long regMethodRunTime;
     private static long baselineRunTime;
@@ -38,6 +37,7 @@ public class Main {
                 logger.info(check.checkPath());
             } 
             else if(cmd.getOptionValue("baseline") != null){
+
                 System.out.printf("Time spent loading the maze from the file: %.2f milliseconds", (double)fileLoadTime);
                 System.out.println();
 
